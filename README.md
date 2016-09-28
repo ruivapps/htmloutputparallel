@@ -1,4 +1,4 @@
-# HTML Output Parallel (htmloutputparallel)
+# Nose HTML Output Parallel (nose-html-output-parallel)
 ## Why another nose plugin
 I really **need** the HTML test report
 
