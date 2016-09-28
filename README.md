@@ -45,9 +45,6 @@ Generate report with html title/header = "Sunday Test" and save to sunday.html
 nosetests --with-html-output --html-out-file=sunday.html --html-out-title="Sunday Test"
 ```
  
-##Todo
-once I figure out how, I will try to put it on pip. so installation would be easier 
-
 ##Bugs
 if you find any, please let me know. create pull request even better 
 
