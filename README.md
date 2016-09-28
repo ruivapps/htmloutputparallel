@@ -46,6 +46,9 @@ nosetests --with-html-output --html-out-file=sunday.html --html-out-title="Sunda
 ```
  
 ##Todo
-once I learnd how, I will try to put it on pip. so installation would be easier 
+once I figure out how, I will try to put it on pip. so installation would be easier 
+
+##Bugs
+if you find any, please let me know. create pull request even better 
 
 
