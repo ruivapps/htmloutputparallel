@@ -1,14 +1,21 @@
 # Nose HTML Output Parallel (nose-html-output-parallel)
 ## Why another nose plugin
-I really **need** the HTML test report
+I really **need** HTML test report for my tests
 
-I really **like** run nose test in parallel (--processes=N)
+I really **love** run nosetests in parallel (--processes=N)
 
-After seaching and trying all nose html output plugin from pip, I found zero plugin I can use with nose --processes=N.
+After seaching and tried almost all nose html output plugin from pip, I found zero html output plugin works --processes=N.
 
-So I dicide to write one myself. The output HTML is build on from jinja2, so it's easy to modify the template or user totally different template for different report. 
+Only options is write one myself. The output HTML is build from jinja2, so it's easy to modify template or user different template for different report. 
 
 ##Install
+via PIP
+
+```
+pip install nose-html-output-parallel
+```
+via Download
+
 ```
 python setup.py install
 ```
@@ -44,8 +51,29 @@ Generate report with html title/header = "Sunday Test" and save to sunday.html
 ```
 nosetests --with-html-output --html-out-file=sunday.html --html-out-title="Sunday Test"
 ```
+
+Generate report by using Environment Variables instead parameters
+
+```
+export NOSE_WITH_HTML_OUTPUT=true
+export NOSE_HTML_OUT_FILE=mytest.html
+export NOSE_HTML_JINJA_TEMPLATE=/tmp/test_template2.jinja
+export NOSE_HTML_OUT_TITLE="Test by using Environment Variables"
+
+nosetests 
+```
  
+##Thanks
+* I learned how to use multiprocessing.Manager to work with nosetests parallel test from this project
+	* <https://github.com/Ignas/nose_xunitmp>
+
+* I download the jinja2 template from this project and use it to generate report 
+	* <https://github.com/lysenkoivan/nose-html-reporting>
+
+
 ##Bugs
-if you find any, please let me know. create pull request even better 
+If you find one please report, otherwise you own it.
+
+create pull request always works better 
 
 
