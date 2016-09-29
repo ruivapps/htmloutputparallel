@@ -173,77 +173,6 @@ class HtmlOutput(Plugin):
         self.stats['testsuite_name'] = self.xunit_testsuite_name
         self.stats['total'] = (self.stats['errors'] + self.stats['failures']
                                + self.stats['passes'] + self.stats['skipped'])
-
-
-        rr = {
-                'class_name_1': {
-                    'stats': {
-                        'failures':0,
-                        'errors' : 0,
-                        'skipped' : 1,
-                        'passes' : 2,
-                        'total' : 2,
-                        },
-                    'tests': [
-                        {
-                            'failed': 0,
-                            'name': '1st_test',
-                            'type': 'passes',
-                            'shortDescription': 'the first test',
-                            'time': '100ms',
-                            'stdout': 'output for class_name_1::1st_test',
-                            'message': 'test message',
-                            'tb': 'test tb?'
-                            },
-                        {
-                            'failed': 1,
-                            'type': 'skipped',
-                            'name': '2nd_test',
-                            'shortDescriptioin': 'the 2nd test',
-                            'time': '100ms',
-                            'stdout': 'output for class_name_1::2nd_test',
-                            'message': 'test message',
-                            'tb': 'test tb?'
-                            },
-                        ],
-                    },
-                'class_name_2': {
-                    'stats': {
-                        'failures' : 1,
-                        'errors' : 1,
-                        'skipped' : 0,
-                        'passes' : 1,
-                        'total' : 2,
-                        },
-                    'tests': [
-                        {
-                            'failed': 1,
-                            'name': 'test_Failure',
-                            'type': 'failures',
-                            'shortDescription': 'the failure test',
-                            'time': '100ms',
-                            'stdout': 'output for class_name_2::test_Failuer',
-                            },
-                        {
-                            'failed': 1,
-                            'name': 'test_Error',
-                            'type': 'error',
-                            'shortDescription': 'the error test',
-                            'time': '100ms',
-                            'stdout': 'output for class_name_2::test_Error',
-                            },
-                        {
-                            'failed': 0,
-                            'name' : 'test_Success',
-                            'type' : 'passes',
-                            'shortDescription': 'the success test',
-                            'time': '100ms',
-                            'stdout': 'output for class_name_2::test_Success',
-                            },
-                        ],
-                    },
-                }
-
         #craft data for jinja
         '''
         data = {
@@ -278,52 +207,28 @@ class HtmlOutput(Plugin):
         classes=[x['class'] for x in self.errorlist]
         class_stats={'failures':0, 'errors':0, 'skipped':0, 'passes':0, 'total':0}
         classes.sort()
-
         report_jinja={}
-        f=open("/nosetest/abc.txt", 'w')
         for _class_ in classes:
             report_jinja.setdefault(_class_, {})
             _class_stats_=class_stats.copy()
             for _error_ in self.errorlist:
                 if _class_ != _error_['class']:
                     continue
-                f.write(str(_error_))
-                f.write('\n\n')
                 report_jinja[_class_].setdefault('tests', [])
                 if _error_ not in report_jinja[_class_]['tests']:
                     report_jinja[_class_]['tests'].append(_error_)
                 _class_stats_[_error_['type']]+=1
             _class_stats_['total']=sum(_class_stats_.values())
             report_jinja[_class_]['stats']=_class_stats_
-        f.close()
-
 
         end_time=datetime.datetime.utcnow()
         self.error_report_file.write(self.jinja.get_template(os.path.basename(self.jinja_template)).render(
             html_title=self.html_title,
-            #report = {'class name': {'stats':self.stats}},
-            #report = rr,
             report = report_jinja,
             stats = self.stats,
             start_time = str(self.start_time),
             duration = str(datetime.datetime.utcnow()-self.start_time),
-            #rawoutput='this is the raw output'
             ))
-        """
-        self.error_report_file.write('<html><title>%s</title><head>%s</head><p>' %(self.html_title, self.html_title))
-        for k in self.stats.keys():
-            self.error_report_file.write("%s ::: %s <br>" %(k, self.stats[k]))
-
-        #*****************************************
-        for line in self.errorlist:
-            self.error_report_file.write("<p>")
-            for k in line:
-                self.error_report_file.write("%s ::: %s <br>" %(k, line[k]))
-        #*****************************************
-
-        self.error_report_file.write('</html>')
-        """
-
         self.error_report_file.close()
         if self.config.verbosity > 1:
             stream.writeln("-" * 70)
