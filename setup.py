@@ -9,7 +9,7 @@ setuptools.setup(
     description="Nose plugin to produce test results in html and works with parallel testing (--processes=N).",
     license="GNU GENERAL PUBLIC LICENSE, Version 3",
     url="https://github.com/ruivapps/htmloutputparallel",
-    download_url='https://github.com/ruivapps/htmloutputparallel/tarball/1.1',
+    download_url='https://github.com/ruivapps/htmloutputparallel/tarball/1.2',
     packages=["htmloutputparallel"],
     package_dir={'htmloutputparallel':'htmloutputparallel'},
     package_data={'htmloutputparallel': ['templates/*.jinja2']},
