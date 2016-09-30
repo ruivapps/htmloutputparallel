@@ -9,6 +9,7 @@ import StringIO
 import time
 import datetime
 import multiprocessing
+import collections
 
 import jinja2
 
@@ -162,7 +163,7 @@ class HtmlOutput(Plugin):
             else:
                 self.errorlist, self.stats = self.config._nose_html_output_state
             self.error_report_file_name = os.path.realpath(options.html_file)
-            self.xunit_testsuite_name = options.xunit_testsuite_name
+            self.html_file_name = options.html_file
 
     def report(self, stream):
         """Writes an HTML output file (using some template?)
@@ -170,7 +171,7 @@ class HtmlOutput(Plugin):
         self.error_report_file = codecs.open(self.error_report_file_name, 'w',
                                              self.encoding, 'replace')
         self.stats['encoding'] = self.encoding
-        self.stats['testsuite_name'] = self.xunit_testsuite_name
+        self.stats['testsuite_name'] = self.html_file_name
         self.stats['total'] = (self.stats['errors'] + self.stats['failures']
                                + self.stats['passes'] + self.stats['skipped'])
         #craft data for jinja
@@ -207,7 +208,7 @@ class HtmlOutput(Plugin):
         classes=[x['class'] for x in self.errorlist]
         class_stats={'failures':0, 'errors':0, 'skipped':0, 'passes':0, 'total':0}
         classes.sort()
-        report_jinja={}
+        report_jinja=collections.OrderedDict()
         for _class_ in classes:
             report_jinja.setdefault(_class_, {})
             _class_stats_=class_stats.copy()
