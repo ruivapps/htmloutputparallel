@@ -159,21 +159,17 @@ function showOutput(id, name) {
 <p class="attribute"><strong>Start Time:</strong> {{ start_time }}</p>
 <p class="attribute"><strong>Duration:</strong> {{ duration }}</p>
 <p class="attribute"><strong>Status:</strong> 
-    Total: {{ stats.total }}
-    Pass: {{ stats.passes }}
-    Skip: {{ stats.skipped }}
-    Failures: {{ stats.failures }}
-    Errors: {{ stats.errors}}</p>
+    Total: {{ stats.total }} 
+    Pass: {{ stats.passes }} 
+    Skip: {{ stats.skipped }} 
+    Failures: {{ stats.failures }} 
+    Errors: {{ stats.errors}} 
+    </p>
 
 </div>
 
 
 
-<p id="show_detail_line">Show
-<a href="javascript:showCase(0)">Summary</a>
-<a href="javascript:showCase(1)">Failed</a>
-<a href="javascript:showCase(2)">All</a>
-</p>
 <table id="result_table">
 <colgroup>
 <col align="left">
@@ -228,8 +224,14 @@ function showOutput(id, name) {
             {% set test_status="Error" %}
         {%- endif %}
         {%- set description = test.shortDescription -%}
+        
+        {% if test_status=="Pass" or test_status=="Skip" %}
+            <tr id='{{ class + test.name }}' class='testcase' style='display: none;'>
+        {%- else -%}
+            <tr id='{{ class + test.name }}' class='testcase'>
+        {%- endif %}
 
-        <tr id='{{ class + test.name }}' class='testcase'>
+
             <td class="{{ test_status.lower() }}Case">
                 {{ test.name }}
                 {% if test.shortDescription %}
@@ -258,7 +260,90 @@ function showOutput(id, name) {
         {%- endfor -%}
     {%- endfor -%}
 
+<!--
+<tr class="passClass">
+    <td>SalesForce: Sales Force QueueSize Check</td>
+    <td>1</td>
+    <td>1</td>
+    <td>0</td>
+    <td>0</td>
+    <td><a href="javascript:showClassDetail('c1',1)">Detail</a></td>
+</tr>
 
+<tr id="pt1.1" class="hiddenRow">
+    <td class="none"><div class="testcase">test_ASG1: Salesforce Queue Size for ASG-1</div></td>
+    <td colspan="5" align="center">pass</td>
+</tr>
+
+<tr class="failClass">
+    <td>AmazonEvents: AWS events check</td>
+    <td>2</td>
+    <td>1</td>
+    <td>1</td>
+    <td>0</td>
+    <td><a href="javascript:showClassDetail('c2',2)">Detail</a></td>
+</tr>
+
+<tr id="pt2.1" class="hiddenRow">
+    <td class="none"><div class="testcase">test_check_aws_events: Check amazon instances events</div></td>
+    <td colspan="5" align="center">pass</td>
+</tr>
+
+<tr id="ft2.2" class="none">
+    <td class="failCase"><div class="testcase">test_prepaid_aws_instance: Check pre-paid aws instances</div></td>
+    <td colspan="5" align="center">
+
+    <!-css div popup start->
+    <a class="popup_link" onfocus="this.blur();" href="javascript:showTestDetail('div_ft2.2')">
+        fail</a>
+
+    <div id="div_ft2.2" class="popup_window">
+        <div style="text-align: right; color:red;cursor:pointer">
+        <a onfocus="this.blur();" onclick="document.getElementById('div_ft2.2').style.display = 'none' ">
+           [x]</a>
+        </div>
+        <pre>
+        
+ft2.2: AssertionError: {
+    &quot;us-west-1&quot;: {
+        &quot;c4.8xlarge&quot;: {
+            &quot;count&quot;: 21, 
+            &quot;name&quot;: [
+                &quot;canary273a-copes1-aca.rtc.citrixonline.com&quot;, 
+                &quot;canary273a-copes2-aca.rtc.citrixonline.com&quot;, 
+                &quot;canary273a-edge5-aca.rtc.citrixonline.com&quot;, 
+                &quot;canary273a-edge6-aca.rtc.citrixonline.com&quot;, 
+                &quot;canary273a-edge7-aca.rtc.citrixonline.com&quot;, 
+                &quot;canary273a-edge8-aca.rtc.citrixonline.com&quot;, 
+                &quot;canary273a-edge9-aca.rtc.citrixonline.com&quot;, 
+                &quot;canary273a-manager1-aca.rtc.citrixonline.com&quot;, 
+                &quot;canary273a-manager2-aca.rtc.citrixonline.com&quot;, 
+                &quot;canary273a-mixer1-aca.rtc.citrixonline.com&quot;, 
+                &quot;canary273a-mixer2-aca.rtc.citrixonline.com&quot;, 
+                &quot;canary273b-copes1-aca.rtc.citrixonline.com&quot;, 
+                &quot;canary273b-copes2-aca.rtc.citrixonline.com&quot;, 
+                &quot;canary273b-edge1-aca.rtc.citrixonline.com&quot;, 
+                &quot;canary273b-edge2-aca.rtc.citrixonline.com&quot;, 
+                &quot;canary273b-edge3-aca.rtc.citrixonline.com&quot;, 
+                &quot;canary273b-edge4-aca.rtc.citrixonline.com&quot;, 
+                &quot;canary273b-edge5-aca.rtc.citrixonline.com&quot;, 
+                &quot;canary273b-manager1-aca.rtc.citrixonline.com&quot;, 
+                &quot;canary273b-manager2-aca.rtc.citrixonline.com&quot;, 
+                &quot;canary273b-mixer1-aca.rtc.citrixonline.com&quot;
+            ], 
+            &quot;error&quot;: 1
+        }
+    }
+}
+
+
+        </pre>
+    </div>
+    <!-css div popup end->
+
+    </td>
+</tr>
+-->
 <tr id="total_row">
     <td>Total</td>
     <td>13</td>
